@@ -10,43 +10,37 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import rest.api.group.spring.rest.api.service.JobService;
 @RestController
 public class JobController {
 	@Autowired
 	public JobService service;
 	
-	@GetMapping("jobposts")
-	public List<JobPost> getjobs(){
-		return service.getAllJobs();
-	}
-	
 	@GetMapping("jobpost/{id}")
-	public JobPost getOneJob(@PathVariable int id) {
+	public JobPost getOneJob(@PathVariable Integer id) {
 		return service.getJob(id);
 	}
-	@PostMapping("addjob")
-	public void addJob(@RequestBody JobPost job) {
+	@PostMapping("/addjob")
+	public void addJob(@Valid @RequestBody JobPost job) {
 		service.addJob(job);
 	}
-	@PutMapping("updatejob")
-	public void updateJob(@RequestBody JobPost jobpost) {
-		service.updateJob(jobpost);
+	@PutMapping("/updatejob/{id}")
+	public void updateJob(@PathVariable Integer id,@Valid @RequestBody JobPost jobpost) {
+		service.updateJob(id,jobpost);
 	}
 	@DeleteMapping("deletejob/{id}")
-	public void deletejob(@PathVariable int id) {
+	public void deletejob(@PathVariable Integer id) {
 		service.deleteJob(id);
-	}
-	@GetMapping("load")
-	public String load() {
-		service.load();
-		return "added";
 	}
 	@GetMapping("/jobpost/keyword/{keyword}")
 		public List<JobPost> keywordSearch(@PathVariable String keyword){
 			return service.search(keyword);
-			
-		}
+			}
+	@GetMapping("/getalljobs")
+	public List<JobPost> getallJobs() {
+		return service.getallJobs();
+	}
 	}
 
 
